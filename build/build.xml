@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<project basedir="./" default="test">
+	<property environment="env" />
+	<property name="dir.root" value="${basedir}/../"></property>
+	<property file="build.properties"></property>
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="ant-contrib-0.6.jar" />
+        </classpath>
+    </taskdef>
+	<target name="develop">
+		<delete dir="${dir.tmp}"></delete>
+		<mkdir dir="${dir.tmp}" />
+		<copydir dest="${dir.tmp}/assets" src="${dir.ext}/src/assets">
+		</copydir>
+		<copydir dest="${dir.tmp}/net" src="${dir.ext}/src/net"></copydir>
+		<copyfile dest="${dir.tmp}/config.info" src="config.info"/>
+		<copyfile dest="${dir.tmp}/profiles/development.mobileprovision" src="certificate/TestDevelopment.mobileprovision"/>
+		<copyfile dest="${dir.tmp}/app.xml" src="app.xml"/>
+		
+		<!-- 
+		<antcall target="readyFile"></antcall>
+		-->
+		<antcall target="package"></antcall>
+	</target>
+
+	<target name="test">
+		<delete dir="${dir.tmp}"></delete>
+		<mkdir dir="${dir.tmp}"/>
+		<copyfile dest="${dir.tmp}/app.xml" src="app.xml"/>
+		<copyfile dest="${dir.tmp}/config.info" src="config.info"/>
+		<echo>${app.name}</echo>
+	</target>
+	
+	<target name="readyFile">
+		<exec executable="${env.JAVA_HOME}\bin\native2ascii.exe" dir="${dir.tmp}">
+            <arg line="-encoding UTF-8 config.info config.properties" />
+        </exec>
+		<property file="${dir.tmp}/config.properties"></property>
+		<copyfile dest="${dir.tmp}/app.xml" src="app.xml"/>
+		<replace encoding="utf-8" file="${dir.tmp}/app.xml">
+			<replacefilter token="{appId}" value="${app.id}"/>
+			<replacefilter token="{appName}" value="${app.name}"/>
+			<replacefilter token="{appVersion}" value="${app.version}"/>
+		</replace>
+		
+		<for list="${exclude}" param="file">
+			<sequential><delete file="${dir.tmp}/assets/@{file}"/></sequential>
+		</for>
+		<copyfile dest="${dir.tmp}/main.swf" src="main.swf"/>
+		<copyfile dest="${dir.tmp}/Default-568h@2x.png" src="${dir.ext}/src/Default-568h@2x.png"/>
+		<echo>${adt.jar}</echo>
+	</target>
+	
+	<target name="package" depends="compile-swf">
+        <java jar="${adt.jar}" fork="true" failonerror="on">
+		<!--
+        <java jar="D:\Programs\Adobe\Adobe Flash Builder 4.6\sdks\4.6.0air3.5\lib\adt.jar" fork="true" failonerror="on">
+		 -->
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-app-store"/>
+            
+            <arg value="-provisioning-profile"/>
+            <arg value="${dir.tmp}/profiles/${profile}.mobileprovision"/>
+
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            
+            <arg value="-keystore"/>
+            <arg value="certificate/avatar_${profile}.p12"/>
+            
+            <arg value="-storepass"/>
+            <arg value="avatar"/>
+            
+            <arg value="${basedir}/${profile}.ipa"/>
+            <arg value="tmp/app.xml"/>
+            
+            <arg value="-C"/>
+            <arg value="tmp" />
+            <arg value="main.swf" />
+            <arg value="assets" />
+            <arg value="net" />
+            <arg value="Default-568h@2x.png" />
+        	<arg value="-extdir"/>
+            <arg value="${dir.ext}/anes"/>
+        </java>
+        <echo>end package</echo>
+		<delete dir="${dir.tmp}" />
+    </target>
+	
+	<target name="compile-swf" depends="readyFile">
+		<if>
+            <equals arg1="${profile}" arg2="development" />
+            <then>
+                <property name="debug" value="true"/>
+            </then>
+            <else>
+                <property name="debug" value="false"/>
+            </else>
+        </if>
+		
+		<java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" maxmemory="512m" failonerror="true">
+			<arg value="+configname=airmobile"/>
+			<arg value="${dir.root}/src/PetCluster.as" />
+			<arg value="-source-path=${dir.root}/src" />
+			<arg value="-target-player=11.1" />
+			<arg value="-output=${dir.tmp}/main.swf" />
+			<arg value="-static-link-runtime-shared-libraries=true"/>
+			<arg value="-define=CONFIG::debugging,${debug}" />
+			<arg value="-source-path+=${dir.ext}/src" />
+			<arg value="-library-path+=${dir.root}/exlibs" />
+			<arg value="-library-path+=${dir.ext}/skins" />
+			<arg value="-library-path+=${dir.ext}/actions" />
+			<arg value="-library-path+=${dir.ext}/libs" />
+			<arg value="-external-library-path+=${dir.root}/exlibs/link" />
+			<arg value="-optimize=true" />
+		</java>
+	</target>
+	
+	<target name="pet1">
+        <delete dir="${dir.tmp}"></delete>
+        <copydir dest="${dir.tmp}" src="${dir.ext}/apps/pet1" />
+        <antcall target="package"></antcall>
+    </target>
+    
+    <target name="Pet1Free">
+        <delete dir="${dir.tmp}"></delete>
+        <copydir dest="${dir.tmp}" src="${dir.ext}/apps/pet1_free" />
+        <antcall target="package"></antcall>
+    </target>
+    
+    <target name="pet2">
+        <delete dir="${dir.tmp}"></delete>
+        <copydir dest="${dir.tmp}" src="${dir.ext}/apps/pet2" />
+        <antcall target="package"></antcall>
+    </target>
+</project>

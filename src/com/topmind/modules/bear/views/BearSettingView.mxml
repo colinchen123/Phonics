@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         width="680" height="616" fontSize="48">
+    
+    <fx:Script>
+        <![CDATA[
+            import mx.managers.PopUpManager;
+            protected function btnExit_clickHandler(event:MouseEvent):void
+            {
+                PopUpManager.removePopUp(this);
+            }
+        ]]>
+    </fx:Script>
+    
+    <fx:Declarations>
+        <!-- Place non-visual elements (e.g., services, value objects) here -->
+    </fx:Declarations>
+    <s:Button id="btnExit" x="238" y="439" width="228" height="80" label="EXIT"
+              click="btnExit_clickHandler(event)"/>
+    <s:HSlider id="time" x="178" y="79" width="340" height="86" maximum="15" minimum="4" value="6"/>
+    <s:Label x="27" y="70" fontSize="48" text="计时："/>
+    <s:Label x="554" y="73" fontSize="48" text="秒"/>
+</s:Panel>
