@@ -55,6 +55,17 @@ public class CardList extends ReplaceView
     public function get selectLetter():String{
         return LetterCard(tab.selectItem).letter;
     }
+    
+
+    public function get trriger():String
+    {
+        return tab.trriger;
+    }
+
+    public function set trriger(value:String):void
+    {
+        tab.trriger = value;
+    }
 
     
     //==========================================================================

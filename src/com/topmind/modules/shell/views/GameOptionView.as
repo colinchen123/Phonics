@@ -7,6 +7,7 @@ import com.topmind.core.AppConfig;
 import com.ysrlin.ui.utils.MovieClipTab;
 
 import flash.display.DisplayObject;
+import flash.display.DisplayObjectContainer;
 import flash.events.Event;
 
 public class GameOptionView extends ReplaceView
@@ -39,8 +40,12 @@ public class GameOptionView extends ReplaceView
         tab = new MovieClipTab(asset, false, false);
         tab.addEventListener(Event.SELECT, tab_selectHandler);
         tab.reSelect = true;
-        asset.pig.mouseChildren = false;
-        asset.bear.mouseChildren = false;
+//        asset.pig.mouseChildren = false;
+//        asset.bear.mouseChildren = false;
+        for (var i:int = 0; i < asset.numChildren; i++){
+            var container:DisplayObjectContainer = asset.getChildAt(i) as DisplayObjectContainer;
+            container && (container.mouseChildren = false);
+        }
     }
     
     override public function dispose():void{

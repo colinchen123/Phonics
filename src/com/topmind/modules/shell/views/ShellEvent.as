@@ -11,6 +11,8 @@ public class ShellEvent extends Event
     static public const EXIT_GAME:String = "exitGame";
     static public const OPEN_SET:String = "shellopenSet";
     static public const SELECTED_AVATAR:String = "selectedAvatar";
+    static public const AUTO_REPLAY:String = "autoReplay";
+    
     //==========================================================================
     //  Constructor
     //==========================================================================

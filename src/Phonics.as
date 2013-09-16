@@ -1,5 +1,6 @@
 package
 {
+import com.testflightapp.sdk.TestFlight;
 import com.topmind.FPS;
 import com.topmind.core.TopMindApp;
 import com.topmind.modules.bear.BearModule;
@@ -13,6 +14,7 @@ public class Phonics extends TopMindApp
     {
         super();
         stage.scaleMode = StageScaleMode.NO_BORDER;
+        TestFlight.takeOff("133979f7-57a0-4b0a-b2af-3ace1c465b87"); // I added this to enable TestFlight - Tim Zheng
     }
     override protected function loadedConfig(data:Object):void{
         addChild(new BearModule());

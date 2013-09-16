@@ -30,9 +30,10 @@ public class SettingViewMediator extends ModuleMediator
         dispatchModuleClone(PhonicsEvent.EXIT_SETTING);
 //        dispatchModuleClone(PhonicsEvent.LOCAL_SET);
         dispatchModuleClone(PhonicsEvent.RESUME);
-        dispatchModuleClone(PhonicsEvent.REPLAY);
+//        dispatchModuleClone(PhonicsEvent.REPLAY);
         dispatchClone(ShellEvent.EXIT_GAME);
         addViewListener(PhonicsEvent.LOCAL_SET, localSetHandler);
+        addViewListener(PhonicsEvent.REPLAY, replayHandler);
     }
     
     override public function onRemove():void{
@@ -47,6 +48,13 @@ public class SettingViewMediator extends ModuleMediator
         }else{
             dispatchToModules(event.clone() as IModuleEvent);
         }
+    }
+    
+    private function replayHandler(event:PhonicsEvent):void{
+            dispatch(new ShellEvent(ShellEvent.AUTO_REPLAY));
+//        if (!dispatchToModules(new PhonicsEvent(PhonicsEvent.REPLAY, true, true))){
+//            trace("autoReplay");
+//        }
     }
 }
 }

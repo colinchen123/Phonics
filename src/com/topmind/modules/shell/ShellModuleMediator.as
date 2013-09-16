@@ -4,6 +4,7 @@ import com.topmind.common.events.PhonicsEvent;
 import com.topmind.core.AppConfig;
 import com.topmind.core.BaseModule;
 import com.topmind.modules.bear.BearModule;
+import com.topmind.modules.lesson.LessonModule;
 import com.topmind.modules.pig.PigModule;
 import com.topmind.modules.shell.models.ShellProxy;
 import com.topmind.modules.shell.views.ShellEvent;
@@ -29,6 +30,8 @@ public class ShellModuleMediator extends ModuleMediator
     
     private var soundChannel:SoundChannel;
     
+    private var tempEvent:ShellEvent;
+    
     [Inject]
     public var view:ShellModule;
     
@@ -44,6 +47,7 @@ public class ShellModuleMediator extends ModuleMediator
         addContextListener(ShellEvent.EXIT_GAME, exitGameHandler);
         addContextListener(PhonicsEvent.LOCAL_SET, localSetHandler);
         addContextListener(ShellEvent.SELECTED_AVATAR, selectedAvatarHandler);
+        addContextListener(ShellEvent.AUTO_REPLAY, autoReplayHandler);
         playBgSound();
         addViewListener(PhonicsEvent.REQUEST_EXIT, requestExitHandler);
     }
@@ -61,17 +65,35 @@ public class ShellModuleMediator extends ModuleMediator
         soundChannel && soundChannel.stop();
         soundChannel = null;
     }
+    
     //==========================================================================
     //  Event Handlers
     //==========================================================================
+    private function autoReplayHandler(event:ShellEvent):void{
+        selectGameHandler(tempEvent);
+    }
+    
     private function selectGameHandler(event:ShellEvent):void{
+        tempEvent = event;
         var game:BaseModule;
         if (event.data == "bear"){
             game = new BearModule();
         }else if (event.data == "pig"){
             game = new PigModule();
-        }else if (event.data == "tutorial"){
-            game = new TutorialModule();
+        }else if (event.data == "lesson"){
+            game = new LessonModule();
+        }else{
+            var tutorial:TutorialModule = new TutorialModule();
+            if (event.data == "tutorial"){
+                tutorial.count = 1;
+            }else if (event.data == "tutorial1"){
+                tutorial.count = 2;
+                tutorial.words = ["as",'ap', 'at','ca','na','pa'];
+            }else{
+                tutorial.count = 3;
+                tutorial.words = ["act",'ans', 'anc','aps','apt','acs'];
+            }
+            game = tutorial;
         }
         shellProxy.currentGame = game;
         view.showGame(game);

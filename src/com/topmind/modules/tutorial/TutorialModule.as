@@ -1,6 +1,7 @@
 package com.topmind.modules.tutorial
 {
 import com.topmind.core.BaseModule;
+import com.topmind.modules.tutorial.view.HelloLetterView;
 
 public class TutorialModule extends BaseModule
 {
@@ -14,7 +15,14 @@ public class TutorialModule extends BaseModule
     public function TutorialModule()
     {
         super();
-        ContextClass = TutorialModuleContext;
+        contextClass = TutorialModuleContext;
+    }
+    
+    public var count:int;
+    public var words:Array;
+    
+    public function showConent():void{
+        addChild(new HelloLetterView());
     }
 }
 }

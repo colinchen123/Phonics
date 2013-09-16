@@ -29,7 +29,7 @@ public class PigModule extends BaseModule
     public function PigModule()
     {
         super();
-        ContextClass = PigModuleContext
+        contextClass = PigModuleContext
     }
     //==========================================================================
     //  Variables

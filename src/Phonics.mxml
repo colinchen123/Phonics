@@ -5,7 +5,7 @@
                xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx" >
     <fx:Script>
         <![CDATA[
-            import com.topmind.core.AppConfig;
+            import com.topmind.core.AppConfig;  
             import com.topmind.managers.SoundManager;
             import com.topmind.modules.shell.ShellModule;
             
@@ -13,7 +13,6 @@
             
             protected function creationCompleteHandler(event:FlexEvent):void
             {
-                // TODO Auto-generated method stub
                 AppConfig.soundManager = new SoundManager();
                 AppConfig.soundManager.soundTranform = new SoundTransform(2);
                 addElement(new ShellModule());

@@ -2,4 +2,8 @@
 <root>
 <volume>2</volume>
 <mixpanel token="8aa4b78f6a83fccbf472a1e28f9528d8" />
+<Modules>
+<tutorial>
+</tutorial>
+</Modules>
 </root>

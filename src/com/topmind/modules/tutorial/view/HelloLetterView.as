@@ -3,8 +3,6 @@ package com.topmind.modules.tutorial.view
 import assets.tutorial.TutorialUiAsset;
 
 import com.greensock.TweenLite;
-import com.greensock.easing.Bounce;
-import com.greensock.easing.Linear;
 import com.topmind.common.events.PhonicsEvent;
 
 import flash.display.Sprite;
@@ -33,8 +31,12 @@ public class HelloLetterView extends Sprite
     private var asset:TutorialUiAsset;
     private var cardList:CardList;
     private var letterCard:LetterCard;
-    private var letterRobot:LetterRobotView;
-    private var recordView:RecordView;
+    private var tutorialPage:BaseTutorialPage;
+    
+    private var letters:Array;
+    private var count:int;
+    
+    private var step:int = 0;
     
     //==========================================================================
     //  Methods
@@ -51,22 +53,32 @@ public class HelloLetterView extends Sprite
         cardList = new CardList();
         cardList.replace(asset.cards);
         cardList.addEventListener(Event.SELECT, cardList_selectHandler);
-        
-        letterRobot = new LetterRobotView();
-        addChild(letterRobot);
-        letterRobot.x = letterCard.x;
-        letterRobot.y = letterCard.y;
-        cardList.letters = ["s", 'a','t','c','p','n'];
         asset.btnFinish.addEventListener(MouseEvent.CLICK, btnFinish_clickHandler);
-        
-        recordView = new RecordView();
-        recordView.replace(asset.recrod);
         asset.btnFinish.visible = false;
         
         asset.btnNext.addEventListener(MouseEvent.CLICK, btnNext_clickHandler);
         asset.fipPage.stop();
         asset.fipPage.visible = false;
+        asset.fipPage.addFrameScript(15, fipEnd);
     }
+    
+    public function setData(lettes:Array, count:int):void{
+        this.letters = lettes;
+        this.count = count;
+        cardList.letters = lettes;
+        if (count == 1){
+            tutorialPage = new ShowOneLetterView();
+        }else if (count == 2){
+            tutorialPage = new ShowTwoLetterView();
+            cardList.visible = false;
+        }else if (count == 3){
+            tutorialPage = new ShowThreeLetterView();
+            cardList.visible = false;
+        }
+        tutorialPage.letterCard = letterCard;
+        addChild(tutorialPage);
+    }
+    
     
     public function dispose():void{
         asset.btnNext.removeEventListener(MouseEvent.CLICK, btnNext_clickHandler);
@@ -81,30 +93,46 @@ public class HelloLetterView extends Sprite
     //  Event Handlers
     //==========================================================================
     private function cardList_selectHandler(event:Event):void{
-        letterRobot.removeRobot();
         var pt:Point = globalToLocal(cardList.pt);
-        TweenLite.killTweensOf(letterCard, false);
-        letterCard.reSet();
-        TweenLite.from(letterCard, 1, {y:pt.y,ease:Bounce.easeOut,overwrite:0, onComplete:jumpend});
-        TweenLite.from(letterCard, 0.5, {scaleX:1, scaleY:1, x:pt.x, overwrite:0 , ease:Linear.easeNone});
-        letterCard.visible = true;
-        letterCard.letter = cardList.selectLetter;
-        letterRobot.letter = cardList.selectLetter;
+        tutorialPage && tutorialPage.showLetterAt(cardList.pt, cardList.selectLetter);
     }
     
     private function btnNext_clickHandler(event:MouseEvent):void{
+        tutorialPage && removeChild(tutorialPage);
+        tutorialPage = null;
+        
         asset.fipPage.visible = true;
-        recordView.visible = false;
         asset.fipPage.gotoAndPlay(1);
+        step++;
+    }
+    
+    private function fipEnd():void{
+        if (tutorialPage){
+            removeChild(tutorialPage);
+        }
+        
+        if (count == 1){
+            tutorialPage = new SelectLetterView();
+            asset.btnNext.visible = false;
+            asset.btnFinish.visible = true;
+        }else if (step == 1){
+            tutorialPage = new LetterTeamView();
+        }else{
+            tutorialPage = new SelectLetterView();
+            cardList.visible = true;
+            asset.btnNext.visible = false;
+            asset.btnFinish.visible = true;
+        }
+//        tutorialPage = new SelectLetterView();
+        tutorialPage.letterCard = letterCard;
+        addChild(tutorialPage);
+        TweenLite.from(tutorialPage, 0.5, {alpha:0});
+        addChild(letterCard);
+        cardList.trriger = MouseEvent.MOUSE_DOWN;
     }
     
     private function btnFinish_clickHandler(event:MouseEvent):void{
         dispatchEvent(new PhonicsEvent(PhonicsEvent.REQUEST_EXIT, true));
-    }
-    
-    private function jumpend():void{
-        letterCard.visible = false;
-        letterRobot.beRobot();
     }
 }
 }

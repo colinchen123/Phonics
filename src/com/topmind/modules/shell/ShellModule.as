@@ -3,6 +3,7 @@ package com.topmind.modules.shell
 import assets.shell.ShellAsset;
 
 import com.topmind.TestMadComponent;
+import com.topmind.core.AppConfig;
 import com.topmind.core.BaseModule;
 import com.topmind.modules.shell.views.AvatarView;
 import com.topmind.modules.shell.views.GameOptionView;
@@ -58,6 +59,11 @@ public class ShellModule extends UIComponent
     }
     
     public function showGame(game:BaseModule):void{
+        AppConfig.soundManager.stopSingleSound();
+        if (currentGame){
+            removeChild(currentGame);
+            currentGame.dispose();
+        }
         gameOption.visible = false;
         currentGame = game;
         addChildAt(game, 0);

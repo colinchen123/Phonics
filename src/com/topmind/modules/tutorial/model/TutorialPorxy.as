@@ -15,5 +15,10 @@ public class TutorialPorxy extends Actor
     {
         super();
     }
+    
+//    public var words:Array = ["act",'ans', 'anc','aps','apt','acs'];
+    public var words:Array = ["as",'ap', 'at','ca','na','pa'];
+    public var letters:Array = ["s", "a", "t","c","p", "n"]
+    public var count:int = 2;
 }
 }

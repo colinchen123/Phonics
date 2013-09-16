@@ -5,6 +5,10 @@ import com.topmind.modules.tutorial.TutorialModuleMediator;
 import com.topmind.modules.tutorial.model.TutorialPorxy;
 import com.topmind.modules.tutorial.view.HelloLetterView;
 import com.topmind.modules.tutorial.view.HelloLetterViewMediator;
+import com.topmind.modules.tutorial.view.LetterTeamView;
+import com.topmind.modules.tutorial.view.LetterTeamViewMediator;
+import com.topmind.modules.tutorial.view.SelectLetterView;
+import com.topmind.modules.tutorial.view.SelectLetterViewMediator;
 
 import org.robotlegs.utilities.modular.mvcs.ModuleCommand;
 
@@ -27,8 +31,10 @@ public class TutorialStartupCommand extends ModuleCommand
         
         mediatorMap.mapView(TutorialModule, TutorialModuleMediator);
         mediatorMap.mapView(HelloLetterView, HelloLetterViewMediator);
+        mediatorMap.mapView(SelectLetterView, SelectLetterViewMediator);
+        mediatorMap.mapView(LetterTeamView, LetterTeamViewMediator);
         
-        contextView.addChild(new HelloLetterView());
+//        contextView.addChild(new HelloLetterView());
     }
 }
 }

@@ -5,6 +5,7 @@ import assets.tutorial.CardAsset;
 import com.topmind.common.view.ReplaceView;
 
 import flash.display.DisplayObject;
+import flash.geom.Point;
 
 public class LetterCard extends ReplaceView
 {
@@ -48,6 +49,14 @@ public class LetterCard extends ReplaceView
         display.scaleX = display.scaleY = 1;
     }
     
+    public function syncStage(pt:Point):void{
+        if (parent){
+            pt = parent.globalToLocal(pt);
+            x = int(pt.x);
+            y = int(pt.y);
+        }
+    }
+    
     public function hideShadow():void{
         asset.shadow.visible = false;
     }
@@ -56,6 +65,10 @@ public class LetterCard extends ReplaceView
         recordData.scale = scaleX;
         recordData.x = x;
         recordData.y = y;
+    }
+    
+    public function littleView():void{
+        scaleX = scaleY = 1;
     }
     
     public function reSet():void{

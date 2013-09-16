@@ -19,7 +19,7 @@ public class BearModule extends BaseModule
     public function BearModule()
     {
         super();
-        ContextClass = BearModuleContext;
+        contextClass = BearModuleContext;
     }
 
 }

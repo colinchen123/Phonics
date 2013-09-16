@@ -3,6 +3,7 @@ package com.topmind.common.view
 import com.topmind.core.AppConfig;
 import com.topmind.managers.SoundManager;
 import com.ysrlin.core.IDispose;
+import com.ysrlin.utils.StringUtil;
 
 import flash.display.DisplayObject;
 import flash.display.MovieClip;
@@ -23,6 +24,7 @@ public class SoundButton extends ReplaceView implements IDispose
     {
         super();
         this.asset = asset;
+        asset && addChild(asset);
         asset && init();
     }
     
@@ -39,6 +41,8 @@ public class SoundButton extends ReplaceView implements IDispose
     //==========================================================================
     //  Properties
     //==========================================================================
+    public var template:String = null;
+    
     public var path:String = "words/"
     
     private var _word:String;
@@ -50,7 +54,11 @@ public class SoundButton extends ReplaceView implements IDispose
     
     public function set word(value:String):void
     {
-        url = path+value+ ".mp3";
+        if (template != null){
+            url = StringUtil.substitute(template, value.toUpperCase());
+        }else{
+            url = path+value.toUpperCase()+ ".mp3";
+        }
         _word = value;
     }
     

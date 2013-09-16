@@ -138,6 +138,7 @@ public class BearViewMediator extends ModuleMediator
         dataProxy.wrongCount = 0;
         view.replay();
         view.setWords(dataProxy.getRandomList());
+        event.preventDefault();
     }
     
     private function endMovieHandler(event:RunMovieViewEvent):void{

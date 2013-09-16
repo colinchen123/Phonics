@@ -1,7 +1,9 @@
 package com.topmind.modules.tutorial.view
 {
 import assets.tutorial.BeLetterRobotAsset;
+import assets.tutorial.JumpAsset;
 import assets.tutorial.LetterRobotoGoodAsset;
+import assets.tutorial.WalkAsset;
 
 import com.topmind.core.AppConfig;
 import com.ysrlin.ui.utils.MovieClipHandler;
@@ -54,26 +56,53 @@ public class LetterRobotView extends Sprite
         }
     }
     
-    public function jump():void{
+    public function shoutJump():void{
+        showRobot(JumpAsset);
+        movieHandler.addEndHandler(robot, wait);
+        soundLetter();
+    }
+    
+    public function jump(say:Boolean = false):void{
         if (robot is LetterRobotoGoodAsset){
             robot.gotoAndPlay(1);
         }else{
             showRobot(LetterRobotoGoodAsset);
         }
         movieHandler.addEndHandler(robot, stopRobot);
-        movieHandler.addFrameHandler(robot, robot.totalFrames - 20, soundLetter);
+        if (say)
+        {
+            movieHandler.addFrameHandler(robot, robot.totalFrames - 20, soundLetter);
+        }
     }
     
-    private function showRobot(claxx:Class):void{
+    public function showRobot(claxx:Class):void{
         removeRobot();
         robot = new claxx() as MovieClip;
         addChild(robot);
         robot["letter"]["tx"].text = letter;
     }
     
+    public function walk():void{
+        showRobot(WalkAsset);
+    }
+    
+    public function wait():void{
+        showRobot(LetterRobotoGoodAsset);
+        robot.gotoAndPlay(30);
+    }
+    
+    public function hand():void{
+        showRobot(WalkAsset);
+        robot.gotoAndStop(1);
+    }
+    
+    public function showMe():void{
+        AppConfig.soundManager.playSound("assets/tutorial/sound/me/" + letter.toLocaleUpperCase() + ".mp3");
+    }
+    
+    
     private function stopRobot():void{
         robot.stop();
-//        soundLetter();
         mouseEnabled = true;
     }
     
@@ -86,7 +115,7 @@ public class LetterRobotView extends Sprite
     //==========================================================================
     private function clickHandler(event:MouseEvent):void{
         mouseEnabled = false;
-        jump();
+        jump(true);
     }
 }
 }
