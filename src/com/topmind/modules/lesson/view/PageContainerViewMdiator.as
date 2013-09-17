@@ -1,7 +1,5 @@
 package com.topmind.modules.lesson.view
 {
-import assets.lesson.PenAsset;
-
 import com.topmind.modules.lesson.view.pages.AppleGamePage;
 import com.topmind.modules.lesson.view.pages.EggPage;
 import com.topmind.modules.lesson.view.pages.GemGamePage;
@@ -9,8 +7,8 @@ import com.topmind.modules.lesson.view.pages.IntroPage;
 import com.topmind.modules.lesson.view.pages.NetPage;
 import com.topmind.modules.lesson.view.pages.PenPage;
 import com.topmind.modules.lesson.view.pages.RecordPage;
-import com.topmind.modules.lesson.view.pages.SpeakPage;
 import com.topmind.modules.lesson.view.pages.TentPage;
+import com.ysrlin.utils.StringUtil;
 
 import org.robotlegs.mvcs.Mediator;
 

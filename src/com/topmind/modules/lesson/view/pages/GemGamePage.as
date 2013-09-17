@@ -140,7 +140,7 @@ public class GemGamePage extends BaseLessonPage
         dragManager.drag(currentGem, null, dragEndHandler);
         TweenLite.to(currentGem, 0.2, {scaleX:0.8, scaleY:0.8});
         var file:String = soundDir +  currentGem.getChildAt(1).name + ".mp3";
-        perSound(file);
+        perSound(file);  
     }
     
     private function dragEndHandler():void{

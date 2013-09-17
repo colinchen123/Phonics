@@ -56,16 +56,7 @@ public class RecordPage extends BaseLessonPage
         asset.girl.gotoAndStop(1);
         introduce();
         frameLine.addTime(tipClick, 1500);
-//        speak();
     }
-    
-//    override protected function speak(url:String=null):void{
-//        asset.buttons.visible = false;
-//        frameLine.clear();
-//        super.speak();
-//        frameLine.addTime(soundManager.playSingleSound, 1000, soundDir + "recording.mp3");
-//        frameLine.addTime(tipClick, 1500);
-//    }
     
     private function tipClick():void{
         asset.buttons.visible = true;
@@ -76,7 +67,6 @@ public class RecordPage extends BaseLessonPage
     //  Event Handlers
     //==========================================================================
     private function girl_clickHandler(event:MouseEvent):void{
-//        replay();
         movie.gotoAndPlay(1);
         speak();
     }

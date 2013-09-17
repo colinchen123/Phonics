@@ -2,12 +2,13 @@ package com.topmind.modules.shell
 {
 import assets.shell.ShellAsset;
 
-import com.topmind.TestMadComponent;
 import com.topmind.core.AppConfig;
 import com.topmind.core.BaseModule;
+import com.topmind.modules.map.MapModule;
 import com.topmind.modules.shell.views.AvatarView;
 import com.topmind.modules.shell.views.GameOptionView;
 import com.topmind.modules.shell.views.ShellEvent;
+import com.ysrlin.ui.components.Navigation;
 
 import flash.events.MouseEvent;
 
@@ -38,8 +39,10 @@ public class ShellModule extends UIComponent
     
     private var gameOption:GameOptionView;
     private var avatarView:AvatarView;
-    
+    private var navigator:Navigation;
     private var currentGame:BaseModule;
+    
+    private var map:MapModule;
     
     //==========================================================================
     //  Methods
@@ -53,22 +56,31 @@ public class ShellModule extends UIComponent
         gameOption.replace(asset.games);
         gameOption.visible = false;
         asset.btnSet.addEventListener(MouseEvent.CLICK, btnSet_clickHandler);
-        addChild(new TestMadComponent());
         asset.btnAvatar.visible = false;
         asset.btnAvatar.addEventListener(MouseEvent.CLICK, btnAvatar_clickHandler);
+        
+        asset.games.visible = false;
+        asset.bg.visible =false;
+        
+        navigator = new Navigation();
+        navigator.setSize(1024, 768);
+        addChildAt(navigator, 0);
+        navigator.showScreen(map = new MapModule());
     }
     
     public function showGame(game:BaseModule):void{
         AppConfig.soundManager.stopSingleSound();
-        if (currentGame){
-            removeChild(currentGame);
-            currentGame.dispose();
-        }
-        gameOption.visible = false;
+//        if (currentGame){
+//            removeChild(currentGame);
+//            currentGame.dispose();
+//        }
+//        gameOption.visible = false;
+//        currentGame = game;
+//        addChildAt(game, 0);
+//        asset.bg.visible = false;
+//        asset.btnAvatar.visible = false;
+        navigator.showScreen(game);
         currentGame = game;
-        addChildAt(game, 0);
-        asset.bg.visible = false;
-        asset.btnAvatar.visible = false;
     }
     
     public function selectAvatar():void{
@@ -86,11 +98,12 @@ public class ShellModule extends UIComponent
     
     public function exitCurrentGame():void{
         if (currentGame == null) return;
-        gameOption.visible = true;
-        removeChild(currentGame);
-        currentGame.dispose();
-        currentGame = null;
-        asset.bg.visible = true;
+//        gameOption.visible = true;
+//        removeChild(currentGame);
+//        currentGame.dispose();
+//        currentGame = null;
+        navigator.showScreen(map);
+//        asset.bg.visible = true;
         asset.btnAvatar.visible = true;
     }
     

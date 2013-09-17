@@ -4,6 +4,7 @@ import assets.lesson.PageContainerAsset;
 
 import com.greensock.TweenLite;
 import com.topmind.modules.lesson.view.pages.BaseLessonPage;
+import com.ysrlin.ui.components.Navigation;
 import com.ysrlin.ui.core.Component;
 
 import flash.display.Sprite;
@@ -29,6 +30,7 @@ public class PageContainerView extends Component
     private var currentPage:BaseLessonPage;
     private var listPage:Array;
     private var pageIndex:int = 0;
+    private var navigtor:Navigation = new Navigation();
     
     private var asset:PageContainerAsset;
     //==========================================================================
@@ -39,20 +41,24 @@ public class PageContainerView extends Component
         addChild(asset);
         asset.btnNext.addEventListener(MouseEvent.CLICK, btnNext_clickHandler);
         asset.btnReplay.addEventListener(MouseEvent.CLICK, btnReplay_clickHandler);
+        navigtor = new Navigation();
+        navigtor.setSize(1024, 768);
+        addChildAt(navigtor, 0);
     }
     public function setPages(array:Array):void{
         listPage = array;
     }
     
     public function showPageAt(index:int):void{
-        if (currentPage){
-            currentPage.end();
-            currentPage.removeEventListener(Event.COMPLETE, currentPage_completeHandler);
-            TweenLite.to(currentPage, 0.5, {alpha:0, onComplete:timeOut, onCompleteParams:[currentPage]});
-        }
+//        if (currentPage){
+//            currentPage.end();
+//            currentPage.removeEventListener(Event.COMPLETE, currentPage_completeHandler);
+//            TweenLite.to(currentPage, 0.5, {alpha:0, onComplete:timeOut, onCompleteParams:[currentPage]});
+//        }
         currentPage = new listPage[index]() as BaseLessonPage;
+        navigtor.showScreen(currentPage);
         currentPage.addEventListener(Event.COMPLETE, currentPage_completeHandler);
-        addChildAt(currentPage, 0);
+//        addChildAt(currentPage, 0);
     }
     
     //==========================================================================

@@ -50,6 +50,9 @@ public class ShellModuleMediator extends ModuleMediator
         addContextListener(ShellEvent.AUTO_REPLAY, autoReplayHandler);
         playBgSound();
         addViewListener(PhonicsEvent.REQUEST_EXIT, requestExitHandler);
+        
+        addModuleListener(PhonicsEvent.SELECT_MAP, selectMapHandler);
+        
     }
     
     override public function onRemove():void{
@@ -69,6 +72,11 @@ public class ShellModuleMediator extends ModuleMediator
     //==========================================================================
     //  Event Handlers
     //==========================================================================
+    private function selectMapHandler(event:PhonicsEvent):void{
+        view.showGame(new LessonModule());
+//        view.showGame(new BearModule());
+    }
+    
     private function autoReplayHandler(event:ShellEvent):void{
         selectGameHandler(tempEvent);
     }

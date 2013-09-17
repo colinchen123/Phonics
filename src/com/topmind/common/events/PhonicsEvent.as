@@ -18,6 +18,8 @@ public class PhonicsEvent extends Event implements IModuleEvent
     
     static public const REQUEST_EXIT:String = "requestExit";
     
+    static public const SELECT_MAP:String = "selectMap";
+    
     //==========================================================================
     //  Constructor
     //==========================================================================
@@ -25,16 +27,22 @@ public class PhonicsEvent extends Event implements IModuleEvent
      * 构造一个新的<code>PhonicsEvent</code>实例.
      *
      */
-    public function PhonicsEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
+    public function PhonicsEvent(type:String, data:Object = null, bubbles:Boolean=false, cancelable:Boolean=false)
     {
+        this.data = data;
         super(type, bubbles, cancelable);
     }
+    
+    //==========================================================================
+    //  Properties
+    //==========================================================================
+    public var data:Object;
     
     //==========================================================================
     //  Methods
     //==========================================================================
     override public function clone():Event{
-        var result:PhonicsEvent = new PhonicsEvent(type, bubbles, cancelable);
+        var result:PhonicsEvent = new PhonicsEvent(type, data, bubbles, cancelable);
         return result;
     }
 }
